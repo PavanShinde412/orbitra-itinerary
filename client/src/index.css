@@ -1,0 +1,115 @@
+:root {
+  /* Surfaces & Backgrounds */
+  --bg-main: #fcfcfc;
+  --bg-surface: #ffffff;
+  --bg-surface-hover: #f3f4f6;
+  --bg-elevated: #ffffff;
+  --bg-accent-subtle: #eef2ff;
+
+  /* Typography */
+  --text-primary: #111827;
+  --text-secondary: #4b5563;
+  --text-accent: #4f46e5;
+  --text-inverse: #ffffff;
+
+  /* Borders & Dividers */
+  --border-subtle: #e5e7eb;
+  --border-hover: #d1d5db;
+  --border-active: #4f46e5;
+
+  /* Status Badges */
+  --badge-success-bg: #dcfce7;
+  --badge-success-text: #16a34a;
+  --badge-warning-bg: #fef9c3;
+  --badge-warning-text: #ca8a04;
+  --badge-error-bg: #fee2e2;
+  --badge-error-text: #dc2626;
+
+  /* Brand */
+  --brand-gradient: #4f46e5; /* Using solid color despite name for premium look */
+}
+
+body.dark-theme {
+  --bg-main: #0f172a;
+  --bg-surface: #1e293b;
+  --bg-surface-hover: #334155;
+  --bg-elevated: #334155;
+  --bg-accent-subtle: #334155;
+
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-accent: #818cf8;
+  --text-inverse: #ffffff;
+
+  --border-subtle: #1e293b;
+  --border-hover: #334155;
+  --border-active: #818cf8;
+
+  --badge-success-bg: rgba(74, 222, 128, 0.1);
+  --badge-success-text: #4ade80;
+  --badge-warning-bg: rgba(250, 204, 21, 0.1);
+  --badge-warning-text: #facc15;
+  --badge-error-bg: rgba(248, 113, 113, 0.1);
+  --badge-error-text: #f87171;
+
+  --brand-gradient: #6366f1; /* Bright indigo for dark mode */
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    sans-serif;
+  background-color: var(--bg-main);
+  color: var(--text-primary);
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-surface-hover);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-hover);
+  border-radius: 3px;
+}
+
+/* Floating Theme Button */
+.theme-toggle-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--brand-gradient);
+  color: var(--text-inverse);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  z-index: 9999;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s;
+}
+.theme-toggle-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+}
+.theme-toggle-btn:active {
+  transform: translateY(0) scale(0.95);
+}
+
+/* Global button spring interactions */
+button {
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s, background-color 0.2s, border-color 0.2s;
+}
+button:active:not(:disabled) {
+  transform: scale(0.96) !important;
+}
