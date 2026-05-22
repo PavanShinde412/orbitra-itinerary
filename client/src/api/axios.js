@@ -4,7 +4,6 @@ const API = axios.create({
   baseURL: 'https://orbitra-backend.onrender.com/api',
 });
 
-// Attach JWT token to every request automatically
 API.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) {
@@ -13,7 +12,6 @@ API.interceptors.request.use((config) => {
   return config;
 });
 
-// Handle 401 globally
 API.interceptors.response.use(
   (response) => response,
   (error) => {
