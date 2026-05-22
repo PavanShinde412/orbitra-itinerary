@@ -46,16 +46,12 @@ const uploadAndGenerate = async (req, res) => {
 
     await itinerary.save();
 
-    fs.unlink(req.file.path, () => { });
-
     sendSuccess(res, { itinerary }, 201);
   } catch (err) {
     console.log('Full error', err);
     itinerary.status = 'failed';
     itinerary.title = 'Generation Failed';
     await itinerary.save();
-
-    fs.unlink(req.file.path, () => { });
 
     sendError(res, err.message || 'AI generation failed', 500);
   }
