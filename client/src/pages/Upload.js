@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDropzone } from 'react-dropzone';
 import toast from 'react-hot-toast';
-import { Upload as UploadIcon, FileText, Image, X, Loader } from 'lucide-react';
+import { Upload as UploadIcon, FileText, Image, X } from 'lucide-react';
 import API from '../api/axios';
 import './Upload.css';
 
@@ -104,39 +104,39 @@ const Upload = () => {
                 {...getRootProps()}
                 className={`dropzone ${isDragActive ? 'active' : ''} ${file ? 'has-file' : ''}`}
               >
-            <input {...getInputProps()} />
-            {!file ? (
-              <div className="dropzone-content">
-                <UploadIcon size={40} color="#667eea" />
-                <p className="drop-text">
-                  {isDragActive
-                    ? 'Drop your file here...'
-                    : 'Drag & drop your document here'}
-                </p>
-                <p className="drop-sub">or click to browse files</p>
-                <div className="supported-formats">
-                  <span>PDF</span>
-                  <span>JPG</span>
-                  <span>PNG</span>
-                  <span>Max 10MB</span>
-                </div>
+                <input {...getInputProps()} />
+                {!file ? (
+                  <div className="dropzone-content">
+                    <UploadIcon size={40} color="#667eea" />
+                    <p className="drop-text">
+                      {isDragActive
+                        ? 'Drop your file here...'
+                        : 'Drag & drop your document here'}
+                    </p>
+                    <p className="drop-sub">or click to browse files</p>
+                    <div className="supported-formats">
+                      <span>PDF</span>
+                      <span>JPG</span>
+                      <span>PNG</span>
+                      <span>Max 10MB</span>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="file-preview">
+                    {getFileIcon()}
+                    <div className="file-info">
+                      <p className="file-name">{file.name}</p>
+                      <p className="file-size">{formatSize(file.size)}</p>
+                    </div>
+                    <button
+                      className="remove-file"
+                      onClick={(e) => { e.stopPropagation(); setFile(null); }}
+                    >
+                      <X size={18} />
+                    </button>
+                  </div>
+                )}
               </div>
-            ) : (
-              <div className="file-preview">
-                {getFileIcon()}
-                <div className="file-info">
-                  <p className="file-name">{file.name}</p>
-                  <p className="file-size">{formatSize(file.size)}</p>
-                </div>
-                <button
-                  className="remove-file"
-                  onClick={(e) => { e.stopPropagation(); setFile(null); }}
-                >
-                  <X size={18} />
-                </button>
-              </div>
-            )}
-          </div>
 
               {/* What AI will do */}
               <div className="ai-info">
