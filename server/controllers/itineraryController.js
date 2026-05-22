@@ -1,7 +1,6 @@
 const path = require('path');
 const fs = require('fs');
 const { v4: uuidv4 } = require('uuid');
-const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
 const Itinerary = require('../models/Itinerary');
 const { extractTextFromFile } = require('../services/extractionService');
 const { generateItinerary } = require('../services/aiService');
@@ -51,7 +50,7 @@ const uploadAndGenerate = async (req, res) => {
     };
     await s3Client.send(new PutObjectCommand(uploadParams));
     const s3Url = `https://${process.env.AWS_S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`;
-    
+
     // Update itinerary with S3 path
     itinerary.sourceFiles[0].path = s3Url;
 
