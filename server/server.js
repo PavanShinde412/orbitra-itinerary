@@ -20,13 +20,10 @@ const app = express();
 // --- Security & utility middleware ---
 app.use(helmet());
 app.use(cors({
-  origin: [
-    'http://localhost:3000',
-    'https://orbitra-itinerary.vercel.app',
-    /\.vercel\.app$/,
-  ],
-  credentials: true,
+  origin: '*',
+  credentials: false,
 }));
+
 app.use(morgan('dev'));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
