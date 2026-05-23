@@ -2,7 +2,8 @@ import React, { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDropzone } from 'react-dropzone';
 import toast from 'react-hot-toast';
-import { Upload as UploadIcon, FileText, Image, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Upload as UploadIcon, FileText, Image, X, ArrowLeft, Wand2 } from 'lucide-react';
 import API from '../api/axios';
 import './Upload.css';
 
@@ -51,8 +52,8 @@ const Upload = () => {
 
   const getFileIcon = () => {
     if (!file) return null;
-    if (file.type === 'application/pdf') return <FileText size={32} color="#ef4444" />;
-    return <Image size={32} color="#3b82f6" />;
+    if (file.type === 'application/pdf') return <FileText size={40} color="#ef4444" />;
+    return <Image size={40} color="var(--brand-color)" />;
   };
 
   const formatSize = (bytes) => {
@@ -65,109 +66,144 @@ const Upload = () => {
     <div className="upload-page">
       <div className="upload-container">
         {/* Back button */}
-        <button className="back-btn" onClick={() => navigate('/')}>
-          ← Back to Dashboard
-        </button>
+        <motion.button 
+          className="back-btn glass-pill" 
+          onClick={() => navigate('/')}
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+        >
+          <ArrowLeft size={16} /> Back to Dashboard
+        </motion.button>
 
-        <div className="upload-card">
+        <motion.div 
+          className="upload-card glass-panel"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ type: 'spring', bounce: 0.4 }}
+        >
           <div className="upload-header">
-            <h2>Generate AI Itinerary</h2>
+            <h2 className="text-shimmer">Generate AI Itinerary</h2>
             <p>Upload your flight ticket, hotel booking or any travel document</p>
           </div>
 
-          {loading ? (
-            <div className="processing-skeleton">
-              <div className="skeleton-header">
-                <div className="skeleton-icon pulse"></div>
-                <div className="skeleton-title pulse"></div>
-                <div className="skeleton-subtitle pulse"></div>
-              </div>
-              <div className="skeleton-steps">
-                <div className="skeleton-step pulse delay-1">
-                  <div className="step-indicator"></div>
-                  <div className="step-text">Extracting document data...</div>
-                </div>
-                <div className="skeleton-step pulse delay-2">
-                  <div className="step-indicator"></div>
-                  <div className="step-text">Analyzing travel dates & locations...</div>
-                </div>
-                <div className="skeleton-step pulse delay-3">
-                  <div className="step-indicator"></div>
-                  <div className="step-text">Structuring your intelligent itinerary...</div>
-                </div>
-              </div>
-            </div>
-          ) : (
-            <>
-              {/* Dropzone */}
-              <div
-                {...getRootProps()}
-                className={`dropzone ${isDragActive ? 'active' : ''} ${file ? 'has-file' : ''}`}
+          <AnimatePresence mode="wait">
+            {loading ? (
+              <motion.div 
+                key="loading"
+                className="processing-skeleton"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
               >
-                <input {...getInputProps()} />
-                {!file ? (
-                  <div className="dropzone-content">
-                    <UploadIcon size={40} color="#667eea" />
-                    <p className="drop-text">
-                      {isDragActive
-                        ? 'Drop your file here...'
-                        : 'Drag & drop your document here'}
-                    </p>
-                    <p className="drop-sub">or click to browse files</p>
-                    <div className="supported-formats">
-                      <span>PDF</span>
-                      <span>JPG</span>
-                      <span>PNG</span>
-                      <span>Max 10MB</span>
-                    </div>
+                <div className="skeleton-header">
+                  <div className="skeleton-icon pulse"><Wand2 size={24} color="var(--brand-color)"/></div>
+                  <div className="skeleton-title pulse"></div>
+                  <div className="skeleton-subtitle pulse"></div>
+                </div>
+                <div className="skeleton-steps">
+                  <div className="skeleton-step pulse delay-1 glass-panel">
+                    <div className="step-indicator"></div>
+                    <div className="step-text">Extracting document data...</div>
                   </div>
-                ) : (
-                  <div className="file-preview">
-                    {getFileIcon()}
-                    <div className="file-info">
-                      <p className="file-name">{file.name}</p>
-                      <p className="file-size">{formatSize(file.size)}</p>
+                  <div className="skeleton-step pulse delay-2 glass-panel">
+                    <div className="step-indicator"></div>
+                    <div className="step-text">Analyzing travel dates & locations...</div>
+                  </div>
+                  <div className="skeleton-step pulse delay-3 glass-panel">
+                    <div className="step-indicator"></div>
+                    <div className="step-text">Structuring your intelligent itinerary...</div>
+                  </div>
+                </div>
+              </motion.div>
+            ) : (
+              <motion.div 
+                key="upload-form"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                {/* Dropzone */}
+                <div
+                  {...getRootProps()}
+                  className={`dropzone ${isDragActive ? 'active' : ''} ${file ? 'has-file' : ''}`}
+                >
+                  <input {...getInputProps()} />
+                  {!file ? (
+                    <div className="dropzone-content">
+                      <motion.div 
+                        className="upload-icon-wrapper"
+                        animate={{ y: [0, -10, 0] }}
+                        transition={{ repeat: Infinity, duration: 2 }}
+                      >
+                        <UploadIcon size={48} color="var(--brand-color)" />
+                      </motion.div>
+                      <p className="drop-text">
+                        {isDragActive
+                          ? 'Drop your file here...'
+                          : 'Drag & drop your document here'}
+                      </p>
+                      <p className="drop-sub">or click to browse files</p>
+                      <div className="supported-formats">
+                        <span>PDF</span>
+                        <span>JPG</span>
+                        <span>PNG</span>
+                        <span>Max 10MB</span>
+                      </div>
                     </div>
-                    <button
-                      className="remove-file"
-                      onClick={(e) => { e.stopPropagation(); setFile(null); }}
+                  ) : (
+                    <motion.div 
+                      className="file-preview"
+                      initial={{ scale: 0.9, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
                     >
-                      <X size={18} />
-                    </button>
-                  </div>
-                )}
-              </div>
+                      {getFileIcon()}
+                      <div className="file-info">
+                        <p className="file-name">{file.name}</p>
+                        <p className="file-size">{formatSize(file.size)}</p>
+                      </div>
+                      <button
+                        className="remove-file"
+                        onClick={(e) => { e.stopPropagation(); setFile(null); }}
+                      >
+                        <X size={20} />
+                      </button>
+                    </motion.div>
+                  )}
+                </div>
 
-              {/* What AI will do */}
-              <div className="ai-info">
-                <h4>What happens next?</h4>
-                <div className="ai-steps">
-                  <div className="ai-step">
-                    <span>1</span>
-                    <p>AI reads and extracts info from your document</p>
-                  </div>
-                  <div className="ai-step">
-                    <span>2</span>
-                    <p>Generates a structured day-by-day itinerary</p>
-                  </div>
-                  <div className="ai-step">
-                    <span>3</span>
-                    <p>You can view, edit and share your itinerary</p>
+                {/* What AI will do */}
+                <div className="ai-info glass-panel">
+                  <h4>What happens next?</h4>
+                  <div className="ai-steps">
+                    <div className="ai-step">
+                      <span>1</span>
+                      <p>AI reads and extracts info from your document</p>
+                    </div>
+                    <div className="ai-step">
+                      <span>2</span>
+                      <p>Generates a structured day-by-day itinerary</p>
+                    </div>
+                    <div className="ai-step">
+                      <span>3</span>
+                      <p>You can view, edit and share your itinerary</p>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <button
-                className="btn-generate"
-                onClick={handleUpload}
-                disabled={!file}
-              >
-                <UploadIcon size={18} />
-                Generate Itinerary
-              </button>
-            </>
-          )}
-        </div>
+                <motion.button
+                  whileHover={file ? { scale: 1.02 } : {}}
+                  whileTap={file ? { scale: 0.98 } : {}}
+                  className="btn-generate"
+                  onClick={handleUpload}
+                  disabled={!file}
+                >
+                  <Wand2 size={20} />
+                  Generate Itinerary
+                </motion.button>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
       </div>
     </div>
   );

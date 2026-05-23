@@ -1,103 +1,139 @@
 .upload-page {
   min-height: 100vh;
   background: var(--bg-main);
-  padding: 32px 24px;
+  background-image: radial-gradient(circle at top right, rgba(3, 114, 98, 0.15) 0%, transparent 60%);
+  padding: 40px 24px;
 }
 
 .upload-container {
-  max-width: 600px;
+  max-width: 1200px;
   margin: 0 auto;
+  padding: 24px 24px 40px;
 }
 
-.back-btn {
-  background: none;
-  border: none;
-  color: var(--text-accent);
-  font-size: 14px;
-  font-weight: 500;
+.upload-page .back-btn {
+  margin-bottom: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  border-radius: 24px;
+  padding: 8px 16px;
+  color: var(--text-primary);
+  font-size: 15px;
+  font-weight: 600;
   cursor: pointer;
-  margin-bottom: 24px;
-  padding: 0;
+  transition: all 0.3s ease;
+  width: fit-content;
 }
 
-.back-btn:hover { text-decoration: underline; }
+.upload-page .back-btn:hover {
+  border-color: var(--border-active);
+  background: var(--bg-surface-hover);
+}
 
 .upload-card {
-  background: var(--bg-surface);
-  border-radius: 16px;
-  padding: 36px;
-  border: 1.5px solid var(--border-subtle);
+  max-width: 640px;
+  margin: 0 auto;
+  border-radius: 24px;
+  padding: 48px;
 }
 
 .upload-header {
   text-align: center;
-  margin-bottom: 28px;
+  margin-bottom: 36px;
 }
 
 .upload-header h2 {
-  font-size: 22px;
+  font-size: 32px;
   font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 8px;
+  margin-bottom: 12px;
+  letter-spacing: -1px;
 }
 
 .upload-header p {
   color: var(--text-secondary);
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .dropzone {
-  border: 2px dashed var(--border-hover);
-  border-radius: 14px;
-  padding: 40px 24px;
+  border: 2px dashed var(--border-glass);
+  border-radius: 20px;
+  padding: 48px 24px;
   text-align: center;
   cursor: pointer;
-  transition: all 0.2s;
-  background: var(--bg-main);
-  margin-bottom: 24px;
+  transition: all 0.3s;
+  background: rgba(255, 255, 255, 0.02);
+  margin-bottom: 32px;
+  position: relative;
+  overflow: hidden;
+}
+
+.dropzone::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: var(--brand-gradient);
+  opacity: 0;
+  transition: opacity 0.3s;
+  z-index: 0;
+}
+
+.dropzone:hover::before,
+.dropzone.active::before {
+  opacity: 0.05;
 }
 
 .dropzone:hover,
 .dropzone.active {
-  border-color: var(--border-active);
-  background: var(--bg-accent-subtle);
+  border-color: var(--brand-color);
+  box-shadow: 0 0 20px rgba(3, 114, 98, 0.2);
 }
 
 .dropzone.has-file {
   border-style: solid;
-  border-color: var(--border-active);
-  background: var(--bg-accent-subtle);
+  border-color: var(--brand-color);
+  background: rgba(3, 114, 98, 0.05);
 }
 
 .dropzone-content {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.upload-icon-wrapper {
+  margin-bottom: 8px;
 }
 
 .drop-text {
-  font-size: 16px;
-  font-weight: 500;
+  font-size: 18px;
+  font-weight: 600;
   color: var(--text-primary);
 }
 
 .drop-sub {
-  font-size: 13px;
+  font-size: 14px;
   color: var(--text-secondary);
 }
 
 .supported-formats {
   display: flex;
   gap: 8px;
-  margin-top: 8px;
+  margin-top: 12px;
 }
 
 .supported-formats span {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
-  padding: 3px 10px;
-  background: var(--border-subtle);
+  padding: 4px 12px;
+  background: var(--bg-surface-glass);
+  border: 1px solid var(--border-glass);
   border-radius: 20px;
   color: var(--text-secondary);
 }
@@ -105,33 +141,36 @@
 .file-preview {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 20px;
+  position: relative;
+  z-index: 1;
+  text-align: left;
 }
 
 .file-info {
   flex: 1;
-  text-align: left;
 }
 
 .file-name {
-  font-size: 15px;
-  font-weight: 500;
+  font-size: 16px;
+  font-weight: 600;
   color: var(--text-primary);
   word-break: break-all;
 }
 
 .file-size {
-  font-size: 13px;
-  color: var(--text-secondary);
+  font-size: 14px;
+  color: var(--brand-color);
+  font-weight: 500;
   margin-top: 4px;
 }
 
 .remove-file {
-  background: none;
-  border: 1.5px solid var(--border-subtle);
-  border-radius: 8px;
-  width: 32px;
-  height: 32px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-glass);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -140,107 +179,116 @@
   transition: all 0.2s;
 }
 
-.remove-file:hover { border-color: var(--badge-error-text); color: var(--badge-error-text); }
+.remove-file:hover { 
+  border-color: var(--badge-error-text); 
+  color: var(--badge-error-text); 
+  background: rgba(220, 38, 38, 0.1);
+}
 
 .ai-info {
-  background: var(--bg-main);
-  border-radius: 12px;
-  padding: 20px;
-  margin-bottom: 24px;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 32px;
 }
 
 .ai-info h4 {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
   color: var(--text-primary);
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 
 .ai-steps {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 16px;
 }
 
 .ai-step {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
 }
 
 .ai-step span {
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
   background: var(--brand-gradient);
-  color: var(--text-inverse);
+  color: #fff;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 700;
   flex-shrink: 0;
+  box-shadow: 0 4px 10px var(--brand-glow);
 }
 
 .ai-step p {
-  font-size: 13px;
+  font-size: 15px;
   color: var(--text-secondary);
+  font-weight: 500;
 }
 
 .btn-generate {
   width: 100%;
-  padding: 14px;
+  padding: 18px;
   background: var(--brand-gradient);
-  color: var(--text-inverse);
+  color: #fff;
   border: none;
-  border-radius: 10px;
-  font-size: 16px;
-  font-weight: 600;
+  border-radius: 16px;
+  font-size: 18px;
+  font-weight: 700;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  transition: opacity 0.2s;
+  gap: 12px;
+  box-shadow: 0 8px 24px var(--brand-glow);
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.btn-generate:hover { opacity: 0.9; }
-.btn-generate:disabled { opacity: 0.6; cursor: not-allowed; }
+.btn-generate:disabled { opacity: 0.6; cursor: not-allowed; box-shadow: none; }
 
 .processing-skeleton {
   display: flex;
   flex-direction: column;
-  gap: 24px;
-  padding: 16px 0;
+  gap: 32px;
+  padding: 20px 0;
 }
 
 .skeleton-header {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
   margin-bottom: 16px;
 }
 
 .skeleton-icon {
-  width: 48px;
-  height: 48px;
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
-  background: var(--bg-surface-hover);
+  background: rgba(3, 114, 98, 0.1);
+  border: 2px solid var(--brand-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .skeleton-title {
-  width: 180px;
-  height: 20px;
-  border-radius: 6px;
-  background: var(--bg-surface-hover);
+  width: 200px;
+  height: 24px;
+  border-radius: 8px;
+  background: var(--bg-surface-glass);
 }
 
 .skeleton-subtitle {
-  width: 240px;
-  height: 14px;
-  border-radius: 4px;
-  background: var(--bg-surface-hover);
+  width: 260px;
+  height: 16px;
+  border-radius: 6px;
+  background: var(--bg-surface-glass);
 }
 
 .skeleton-steps {
@@ -253,10 +301,8 @@
   display: flex;
   align-items: center;
   gap: 16px;
-  padding: 16px;
-  background: var(--bg-main);
-  border-radius: 12px;
-  border: 1px solid var(--border-subtle);
+  padding: 20px;
+  border-radius: 16px;
 }
 
 .step-indicator {
@@ -264,13 +310,13 @@
   height: 24px;
   border-radius: 50%;
   background: var(--brand-gradient);
-  opacity: 0.2;
+  opacity: 0.4;
 }
 
 .step-text {
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--text-secondary);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
 }
 
 .pulse {
@@ -283,5 +329,5 @@
 
 @keyframes pulse-animation {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
+  50% { opacity: 0.6; }
 }

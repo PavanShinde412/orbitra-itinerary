@@ -1,0 +1,139 @@
+/* Global Responsive Styles */
+
+@media (max-width: 768px) {
+  /* Dashboard */
+  .navbar {
+    flex-direction: column;
+    height: auto;
+    padding: 16px;
+    gap: 16px;
+    margin: 16px;
+    width: calc(100% - 32px);
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .bento-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-container {
+    padding: 16px 16px 40px;
+  }
+
+  /* Upload Page */
+  .upload-card {
+    padding: 24px;
+    margin: 16px;
+  }
+
+  .upload-header h2 {
+    font-size: 24px;
+  }
+
+  .dropzone {
+    padding: 32px 16px;
+  }
+
+  .file-preview {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  /* Itinerary Detail */
+  .detail-navbar {
+    flex-direction: column;
+    height: auto;
+    padding: 16px;
+    gap: 16px;
+    margin: 16px;
+    width: calc(100% - 32px);
+  }
+
+  .detail-actions {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .detail-hero h1 {
+    font-size: 32px;
+  }
+
+  .summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .day-header {
+    flex-direction: column;
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .activities-list {
+    padding: 16px;
+  }
+
+  .activities-list::before {
+    left: 35px; /* Adjust line position for smaller padding */
+  }
+
+  .activity-item {
+    gap: 12px;
+  }
+
+  .activity-icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .activity-body {
+    padding: 16px;
+  }
+
+  .activity-top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .day-hotel, .day-notes {
+    padding: 16px;
+  }
+
+  /* Floating Theme Button */
+  .theme-toggle-btn {
+    bottom: 16px;
+    right: 16px;
+    width: 48px;
+    height: 48px;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Smaller mobile tweaks */
+  .hero-meta {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .glass-pill {
+    width: 100%;
+  }
+
+  .auth-left {
+    padding: 20px 10px;
+  }
+
+  .auth-title {
+    font-size: 32px;
+  }
+
+  .auth-card {
+    padding: 24px;
+  }
+}

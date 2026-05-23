@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { QRCodeSVG as QRCode } from 'qrcode.react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import {
   MapPin, Calendar, Clock, Share2, Copy,
   Trash2, ArrowLeft, Plane, Hotel, Utensils,
-  Navigation, Loader, X, Download, MessageCircle
+  Navigation, Loader, X, Download, MessageCircle, GripVertical
 } from 'lucide-react';
 import html2pdf from 'html2pdf.js';
 import API from '../api/axios';
@@ -64,17 +66,33 @@ const ItineraryDetail = () => {
     toast.success('Link copied to clipboard!');
   };
 
-  const handleDownloadPDF = () => {
+  const handleDownloadPDF = async () => {
     toast.success('Generating PDF...', { duration: 2000 });
     const element = document.querySelector('.detail-container');
+    
+    // Temporarily force light theme
+    const isDark = document.body.classList.contains('dark-theme');
+    if (isDark) {
+      document.body.classList.remove('dark-theme');
+    }
+
     const opt = {
       margin:       0.5,
       filename:     `${itinerary.title.replace(/\s+/g, '_')}_Itinerary.pdf`,
       image:        { type: 'jpeg', quality: 0.98 },
       html2canvas:  { scale: 2, useCORS: true },
-      jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+      jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' },
+      pagebreak:    { mode: ['css', 'legacy'], avoid: ['.day-card', '.summary-grid', '.activity-item'] }
     };
-    html2pdf().set(opt).from(element).save();
+    
+    try {
+      await html2pdf().set(opt).from(element).save();
+    } finally {
+      // Restore dark theme if it was active
+      if (isDark) {
+        document.body.classList.add('dark-theme');
+      }
+    }
   };
 
   const handleDelete = async () => {
@@ -88,11 +106,29 @@ const ItineraryDetail = () => {
     }
   };
 
+  const onDragEnd = (result, dayIndex) => {
+    if (!result.destination) return;
+    
+    const { source, destination } = result;
+    if (source.index === destination.index) return;
+
+    const newItinerary = { ...itinerary };
+    const day = newItinerary.days[dayIndex];
+    const newActivities = Array.from(day.activities);
+    
+    const [removed] = newActivities.splice(source.index, 1);
+    newActivities.splice(destination.index, 0, removed);
+    
+    day.activities = newActivities;
+    setItinerary(newItinerary);
+    // Ideally we would send an API request to save the new order here
+  };
+
   if (loading) {
     return (
       <div className="loading-center">
-        <Loader size={32} className="spin" />
-        <p>Loading itinerary...</p>
+        <Loader size={40} className="spin" color="var(--brand-color)" />
+        <p>Loading your premium itinerary...</p>
       </div>
     );
   }
@@ -102,7 +138,12 @@ const ItineraryDetail = () => {
   return (
     <div className="detail-page">
       {/* Header */}
-      <div className="detail-navbar">
+      <motion.div 
+        className="detail-navbar glass-panel"
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ type: 'spring', stiffness: 100, damping: 20 }}
+      >
         <button className="back-btn" onClick={() => navigate('/')}>
           <ArrowLeft size={16} /> Dashboard
         </button>
@@ -122,31 +163,40 @@ const ItineraryDetail = () => {
             <Trash2 size={16} />
           </button>
         </div>
-      </div>
+      </motion.div>
 
       <div className="detail-container">
         {/* Hero */}
-        <div className="detail-hero">
-          <h1>{itinerary.title}</h1>
+        <motion.div 
+          className="detail-hero"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <h1 className="text-shimmer">{itinerary.title}</h1>
           <div className="hero-meta">
             {itinerary.destination && (
-              <span><MapPin size={15} /> {itinerary.destination}</span>
+              <span className="glass-pill"><MapPin size={15} /> {itinerary.destination}</span>
             )}
             {itinerary.startDate && (
-              <span><Calendar size={15} /> {itinerary.startDate} → {itinerary.endDate}</span>
+              <span className="glass-pill"><Calendar size={15} /> {itinerary.startDate} → {itinerary.endDate}</span>
             )}
             {itinerary.duration && (
-              <span>🌙 {itinerary.duration} days</span>
+              <span className="glass-pill text-accent">🌙 {itinerary.duration} days</span>
             )}
           </div>
-        </div>
+        </motion.div>
 
         {/* Summary cards */}
         {itinerary.summary && (
-          <div className="summary-grid">
+          <motion.div 
+            className="summary-grid"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+          >
             {itinerary.summary.airline && (
-              <div className="summary-card">
-                <Plane size={18} color="#667eea" />
+              <div className="summary-card glass-panel">
+                <Plane size={24} color="var(--brand-color)" />
                 <div>
                   <p className="summary-label">Airline</p>
                   <p className="summary-value">{itinerary.summary.airline}</p>
@@ -154,8 +204,8 @@ const ItineraryDetail = () => {
               </div>
             )}
             {itinerary.summary.flightNumber && (
-              <div className="summary-card">
-                <span style={{ fontSize: 18 }}>🎫</span>
+              <div className="summary-card glass-panel">
+                <span style={{ fontSize: 24 }}>🎫</span>
                 <div>
                   <p className="summary-label">Flight</p>
                   <p className="summary-value">{itinerary.summary.flightNumber}</p>
@@ -163,8 +213,8 @@ const ItineraryDetail = () => {
               </div>
             )}
             {itinerary.summary.hotel && (
-              <div className="summary-card">
-                <Hotel size={18} color="#667eea" />
+              <div className="summary-card glass-panel">
+                <Hotel size={24} color="var(--brand-color)" />
                 <div>
                   <p className="summary-label">Hotel</p>
                   <p className="summary-value">{itinerary.summary.hotel}</p>
@@ -172,22 +222,29 @@ const ItineraryDetail = () => {
               </div>
             )}
             {itinerary.summary.bookingReference && (
-              <div className="summary-card">
-                <span style={{ fontSize: 18 }}>📋</span>
+              <div className="summary-card glass-panel">
+                <span style={{ fontSize: 24 }}>📋</span>
                 <div>
                   <p className="summary-label">Booking Ref</p>
                   <p className="summary-value">{itinerary.summary.bookingReference}</p>
                 </div>
               </div>
             )}
-          </div>
+          </motion.div>
         )}
 
         {/* Day by day */}
         <div className="days-section">
-          <h2>Day-by-Day Itinerary</h2>
-          {itinerary.days?.map((day) => (
-            <div key={day.day} className="day-card">
+          <h2>Day-by-Day Experience</h2>
+          {itinerary.days?.map((day, dayIndex) => (
+            <motion.div 
+              key={day.day} 
+              className="day-card glass-panel"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.5 }}
+            >
               <div className="day-header">
                 <div className="day-number">Day {day.day}</div>
                 <div>
@@ -200,37 +257,64 @@ const ItineraryDetail = () => {
                 </div>
               </div>
 
-              <div className="activities-list">
-                {day.activities?.map((act, idx) => (
-                  <div key={idx} className={`activity-item type-${act.type}`}>
-                    <div className="activity-icon">
-                      {activityIcon(act.type)}
-                    </div>
-                    <div className="activity-body">
-                      <div className="activity-top">
-                        <span className="activity-title">{act.title}</span>
-                        {act.time && (
-                          <span className="activity-time">
-                            <Clock size={11} /> {act.time}
-                          </span>
-                        )}
+              {day.activities && day.activities.length > 0 && (
+                <DragDropContext onDragEnd={(result) => onDragEnd(result, dayIndex)}>
+                  <Droppable droppableId={`day-${dayIndex}`}>
+                    {(provided) => (
+                      <div 
+                        className="activities-list"
+                        {...provided.droppableProps}
+                        ref={provided.innerRef}
+                      >
+                        {day.activities.map((act, idx) => (
+                          <Draggable key={`${day.day}-${idx}`} draggableId={`${day.day}-${idx}`} index={idx}>
+                            {(provided, snapshot) => (
+                              <div 
+                                className={`activity-item type-${act.type} ${snapshot.isDragging ? 'is-dragging' : ''}`}
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                              >
+                                <div 
+                                  className="drag-handle"
+                                  {...provided.dragHandleProps}
+                                >
+                                  <GripVertical size={16} />
+                                </div>
+                                <div className="activity-icon">
+                                  {activityIcon(act.type)}
+                                </div>
+                                <div className="activity-body glass-panel">
+                                  <div className="activity-top">
+                                    <span className="activity-title">{act.title}</span>
+                                    {act.time && (
+                                      <span className="activity-time">
+                                        <Clock size={11} /> {act.time}
+                                      </span>
+                                    )}
+                                  </div>
+                                  {act.description && (
+                                    <p className="activity-desc">{act.description}</p>
+                                  )}
+                                  {act.location && (
+                                    <p className="activity-location">
+                                      <MapPin size={11} /> {act.location}
+                                    </p>
+                                  )}
+                                </div>
+                              </div>
+                            )}
+                          </Draggable>
+                        ))}
+                        {provided.placeholder}
                       </div>
-                      {act.description && (
-                        <p className="activity-desc">{act.description}</p>
-                      )}
-                      {act.location && (
-                        <p className="activity-location">
-                          <MapPin size={11} /> {act.location}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
+                    )}
+                  </Droppable>
+                </DragDropContext>
+              )}
 
               {day.accommodation && (
                 <div className="day-hotel">
-                  <Hotel size={14} />
+                  <Hotel size={16} />
                   <span>Staying at: {day.accommodation}</span>
                 </div>
               )}
@@ -240,55 +324,77 @@ const ItineraryDetail = () => {
                   💡 {day.notes}
                 </div>
               )}
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
 
       {/* Share Modal */}
-      {showShareModal && shareData && (
-        <div className="modal-overlay" onClick={() => setShowShareModal(false)}>
-          <div className="modal" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header">
-              <h3>Share Itinerary</h3>
-              <button onClick={() => setShowShareModal(false)}>
-                <X size={20} />
-              </button>
-            </div>
-
-            <div className="qr-section">
-              <QRCode value={shareData.shareUrl} size={160} />
-              <p className="qr-hint">Scan to open on any device</p>
-            </div>
-
-            <div className="share-link-box">
-              <input
-                type="text"
-                value={shareData.shareUrl}
-                readOnly
-              />
-              <button className="btn-copy" onClick={copyLink}>
-                <Copy size={16} />
-                Copy
-              </button>
-            </div>
-
-            <a 
-              href={`https://api.whatsapp.com/send?text=${encodeURIComponent('Check out my travel itinerary! ✈️ ' + shareData.shareUrl)}`} 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="btn-whatsapp"
+      <AnimatePresence>
+        {showShareModal && shareData && (
+          <motion.div 
+            className="modal-overlay" 
+            onClick={() => setShowShareModal(false)}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <motion.div 
+              className="modal glass-panel" 
+              onClick={(e) => e.stopPropagation()}
+              initial={{ scale: 0.9, y: 20, opacity: 0 }}
+              animate={{ scale: 1, y: 0, opacity: 1 }}
+              exit={{ scale: 0.9, y: 20, opacity: 0 }}
+              transition={{ type: "spring", bounce: 0.4 }}
             >
-              <MessageCircle size={18} />
-              Share via WhatsApp
-            </a>
+              <div className="modal-header">
+                <h3>Share Itinerary</h3>
+                <button onClick={() => setShowShareModal(false)}>
+                  <X size={20} />
+                </button>
+              </div>
 
-            <p className="expiry-note">
-              🕐 Link expires in 7 days
-            </p>
-          </div>
-        </div>
-      )}
+              <div className="qr-section">
+                <QRCode value={shareData.shareUrl} size={160} />
+                <p className="qr-hint">Scan to open on any device</p>
+              </div>
+
+              <div className="share-link-box">
+                <input
+                  type="text"
+                  value={shareData.shareUrl}
+                  readOnly
+                />
+                <motion.button 
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="btn-copy" 
+                  onClick={copyLink}
+                >
+                  <Copy size={16} />
+                  Copy
+                </motion.button>
+              </div>
+
+              <motion.a 
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                href={`https://api.whatsapp.com/send?text=${encodeURIComponent('Check out my travel itinerary! ✈️ ' + shareData.shareUrl)}`} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="btn-whatsapp"
+              >
+                <MessageCircle size={18} />
+                Share via WhatsApp
+              </motion.a>
+
+              <p className="expiry-note">
+                🕐 Link expires in 7 days
+              </p>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
