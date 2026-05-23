@@ -1,9 +1,7 @@
-import axios from 'axios';
-
+﻿import axios from 'axios';
 const API = axios.create({
-  baseURL: 'http://localhost:5000/api',
+  baseURL: 'https://orbitra-itinerary.onrender.com/api',
 });
-
 API.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) {
@@ -11,7 +9,6 @@ API.interceptors.request.use((config) => {
   }
   return config;
 });
-
 API.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -23,5 +20,4 @@ API.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-
 export default API;
