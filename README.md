@@ -289,7 +289,7 @@ QR code / link / WhatsApp
 
 **Pavan Shinde**
 - GitHub: [@PavanShinde412](https://github.com/PavanShinde412)
-- Assignment for: TripCraft Technologies — Junior Full Stack Developer (MERN + AI)
+- Assignment for: Orbitra Technologies — Junior Full Stack Developer (MERN + AI)
 
 ---
 
