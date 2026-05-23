@@ -1,8 +1,8 @@
-# ✈️ TripCraft Itinerary Generator
+# ✈️ Orbitra Itinerary Generator
 
 > AI-powered travel itinerary generator — upload your flight ticket or hotel booking and get a complete day-by-day itinerary instantly.
 
-![TripCraft](https://img.shields.io/badge/Status-Live-success?style=for-the-badge)
+![Orbitra](https://img.shields.io/badge/Status-Live-success?style=for-the-badge)
 ![React](https://img.shields.io/badge/React-18-blue?style=for-the-badge&logo=react)
 ![Node](https://img.shields.io/badge/Node.js-22-green?style=for-the-badge&logo=node.js)
 ![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-green?style=for-the-badge&logo=mongodb)
@@ -14,9 +14,9 @@
 
 | | |
 |---|---|
-| 🌐 **Live Demo** | https://tripcraft-itinerary.vercel.app |
-| 📦 **GitHub Repo** | https://github.com/PavanShinde412/tripcraft-itinerary |
-| 🔧 **Backend API** | https://tripcraft-itinerary.onrender.com/api/health |
+| 🌐 **Live Demo** | https://orbitra-itinerary.vercel.app |
+| 📦 **GitHub Repo** | https://github.com/PavanShinde412/orbitra-itinerary |
+| 🔧 **Backend API** | https://orbitra-itinerary.onrender.com/api/health |
 
 ---
 ## 📸 Screenshots
@@ -100,7 +100,7 @@
 ## 📁 Folder Structure
 
 ```
-tripcraft-itinerary/
+orbitra-itinerary/
 │
 ├── client/                          # React Frontend
 │   └── src/
@@ -180,8 +180,8 @@ tripcraft-itinerary/
 
 ### 1. Clone the repo
 ```bash
-git clone https://github.com/PavanShinde412/tripcraft-itinerary.git
-cd tripcraft-itinerary
+git clone https://github.com/PavanShinde412/orbitra-itinerary.git
+cd orbitra-itinerary
 ```
 
 ### 2. Setup Backend
@@ -193,7 +193,7 @@ npm install
 Create `server/.env`:
 ```env
 PORT=5000
-MONGO_URI=mongodb://localhost:27017/tripcraft
+MONGO_URI=mongodb://localhost:27017/orbitra
 JWT_SECRET=your_jwt_secret_here
 JWT_EXPIRE=7d
 GROQ_API_KEY=your_groq_api_key_here

@@ -45,7 +45,7 @@ const Register = () => {
     try {
       const res = await API.post('/auth/register', form);
       login(res.data.data.user, res.data.data.token);
-      toast.success(`Welcome to TripCraft, ${res.data.data.user.name}!`);
+      toast.success(`Welcome to Orbitra, ${res.data.data.user.name}!`);
       navigate('/');
     } catch (err) {
       toast.error(err.response?.data?.error || 'Registration failed');
@@ -67,7 +67,7 @@ const Register = () => {
           <div className="auth-brand-logo">
             <Flame size={32} color="#fff" style={{ marginLeft: 4 }} />
           </div>
-          <div className="auth-brand-subtitle">BY TRIPCRAFT TECHNOLOGIES</div>
+          <div className="auth-brand-subtitle">BY ORBITRA TECHNOLOGIES</div>
         </motion.div>
 
         <motion.div

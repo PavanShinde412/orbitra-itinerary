@@ -59,7 +59,7 @@ const ShareView = () => {
   return (
     <div className="detail-page">
       <div className="detail-navbar">
-        <div style={{ fontWeight: 700, fontSize: 18 }}>✈️ TripCraft</div>
+        <div style={{ fontWeight: 700, fontSize: 18 }}>✈️ Orbitra</div>
         <span style={{ fontSize: 13, color: '#64748b' }}>Shared Itinerary</span>
       </div>
 

@@ -64,7 +64,7 @@ const Login = () => {
           <div className="auth-brand-logo">
             <Flame size={32} color="#fff" style={{ marginLeft: 4 }} />
           </div>
-          <div className="auth-brand-subtitle">BY TRIPCRAFT TECHNOLOGIES</div>
+          <div className="auth-brand-subtitle">BY ORBITRA TECHNOLOGIES</div>
         </motion.div>
 
         <motion.div
