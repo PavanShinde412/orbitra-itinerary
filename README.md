@@ -1,133 +1,298 @@
-# Orbitra Itinerary Generator 🌍
+# ✈️ Orbitra Itinerary Generator
 
-![MERN Stack](https://img.shields.io/badge/MERN-Stack-blue)
-![License](https://img.shields.io/badge/License-MIT-green)
+> AI-powered travel itinerary generator — upload your flight ticket or hotel booking and get a complete day-by-day itinerary instantly.
 
-A full-stack MERN application that allows users to upload travel documents (PDFs and images) and leverages AI (Google Gemini) to automatically generate comprehensive travel itineraries. Built for the Orbitra Technologies assignment.
+![Orbitra](https://img.shields.io/badge/Status-Live-success?style=for-the-badge)
+![React](https://img.shields.io/badge/React-18-blue?style=for-the-badge&logo=react)
+![Node](https://img.shields.io/badge/Node.js-22-green?style=for-the-badge&logo=node.js)
+![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-green?style=for-the-badge&logo=mongodb)
+![Groq](https://img.shields.io/badge/AI-Groq%20LLaMA-orange?style=for-the-badge)
 
 ---
 
-## 🚀 Live Demo
-- **Frontend (Vercel):** *[Coming Soon]*
-- **Backend (Render):** *[Coming Soon]*
+## 🔗 Links
 
-*(Note: Since the backend is deployed on Render's free tier, the first request might take 50 seconds to wake up the server).*
+| | |
+|---|---|
+| 🌐 **Live Demo** | https://orbitra-itinerary.vercel.app |
+| 📦 **GitHub Repo** | https://github.com/PavanShinde412/orbitra-itinerary |
+| 🔧 **Backend API** | https://orbitra-itinerary.onrender.com/api/health |
+
+---
+## 📸 Screenshots
+
+### Login
+![Login](./client/public/screenshots/Login.png)
+
+### Register
+![Register](./client/public/screenshots/Register.png)
+
+### Dashboard
+![Dashboard](./client/public/screenshots/Dashboard.png)
+
+### Upload & Generate
+![Generate](./client/public/screenshots/Generate.png)
+
+### Itinerary Detail
+![Itinerary](./client/public/screenshots/Itinerary.png)
+
+### Share
+![Share](./client/public/screenshots/share.png)
 
 ---
 
 ## ✨ Features
-- **JWT Authentication:** Secure user registration and login.
-- **AWS S3 File Upload:** Upload travel confirmation PDFs or images, stored securely in AWS S3.
-- **AI Text Extraction:** Extracts text from PDFs and images using Groq Vision (Llama) and `pdf-parse`.
-- **Smart Itinerary Generation:** Generates a structured itinerary based on the uploaded data using Groq API (Llama-3).
-- **MongoDB Storage:** Saves all generated itineraries to the user's history using MongoDB Atlas.
-- **Shareable Links & WhatsApp:** Generates a unique, publicly accessible link, complete with a WhatsApp one-click share button.
-- **Export to PDF:** Download any itinerary as a cleanly formatted PDF document.
-- **QR Code Generation:** Scannable QR code for easy mobile sharing.
-- **Responsive UI:** Modern, clean, and fully responsive user interface built with React.
 
----
+### Core Features
+- 🔐 **JWT Authentication** — Secure register/login with bcrypt password hashing
+- 📄 **Document Upload** — Supports PDF and image (JPG, PNG) travel documents
+- 🤖 **AI Extraction** — Extracts flight, hotel, dates and passenger info automatically
+- 🗓️ **Itinerary Generation** — Structured day-by-day itinerary using Groq LLaMA 3.3
+- 💾 **History** — All itineraries stored in MongoDB, accessible anytime
+- 🔗 **Smart Sharing** — Unique share token + QR code + copy link + 7-day expiry
+- 📱 **Responsive UI** — Works on mobile, tablet and desktop
 
-## 📸 Screenshots
-
-| Dashboard | Upload Document |
-| :---: | :---: |
-| *(Add screenshot here)* | *(Add screenshot here)* |
-| **Itinerary Detail** | **Share View & QR Code** |
-| *(Add screenshot here)* | *(Add screenshot here)* |
+### Bonus Features
+- 🖱️ **Drag & Drop** — File upload with react-dropzone
+- 📊 **Status Tracking** — Processing / Completed / Failed states
+- 🌙 **Dark Mode Toggle** — Theme switcher
+- 🔒 **Revoke Share Link** — Disable sharing anytime
+- 🛡️ **Security** — Helmet.js, CORS, rate limiting ready
 
 ---
 
 ## 🛠️ Tech Stack
 
 ### Frontend
-- React.js 18
-- React Router v6
-- Axios
-- React Dropzone
-- React Hot Toast
-- Lucide React (Icons)
-- QRCode React
+| Technology | Purpose |
+|---|---|
+| React 18 | UI framework |
+| React Router v6 | Client-side routing |
+| Axios | HTTP client with interceptors |
+| react-dropzone | Drag & drop file upload |
+| react-hot-toast | Toast notifications |
+| lucide-react | Icons |
+| qrcode.react | QR code generation |
 
 ### Backend
-- Node.js (v22)
-- Express.js (v4)
-- MongoDB Atlas & Mongoose
-- JSON Web Token (JWT)
-- Multer & AWS S3 (`@aws-sdk/client-s3`)
-- Groq AI (Llama 3.3 Versatile & Llama 4 Vision)
-- pdf-parse (v1.1.1)
+| Technology | Purpose |
+|---|---|
+| Node.js + Express | REST API server |
+| MongoDB + Mongoose | Database + ODM |
+| JWT + bcryptjs | Authentication |
+| Multer | File upload handling |
+| pdf-parse | PDF text extraction |
+| Groq SDK (LLaMA 3.3) | AI itinerary generation |
+| Helmet + CORS | Security middleware |
+| Morgan | HTTP request logging |
+| UUID | Share token generation |
+
+### Infrastructure
+| Service | Purpose |
+|---|---|
+| Vercel | Frontend deployment |
+| Render | Backend deployment |
+| MongoDB Atlas | Cloud database |
+| cron-job.org | Keep backend alive |
 
 ---
 
-## ⚙️ Environment Variables
+## 📁 Folder Structure
 
-To run this project, you will need to add the following environment variables to your `.env` file in the `server` directory.
-
-`PORT=5000`
-`MONGO_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/orbitra`
-`JWT_SECRET=your_jwt_secret_key`
-`JWT_EXPIRE=7d`
-`GROQ_API_KEY=your_groq_api_key`
-`NODE_ENV=development`
-`CLIENT_URL=http://localhost:3000`
-`AWS_ACCESS_KEY_ID=your_aws_access_key`
-`AWS_SECRET_ACCESS_KEY=your_aws_secret_key`
-`AWS_REGION=your_aws_region`
-`AWS_S3_BUCKET_NAME=your_bucket_name`
-
-For the `client` directory (Create React App), create a `.env` file:
-`REACT_APP_API_URL=http://localhost:5000`
-
----
-
-## 💻 Local Setup Instructions
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/your-username/orbitra-itinerary.git
-   cd orbitra-itinerary
-   ```
-
-2. **Install Backend Dependencies**
-   ```bash
-   cd server
-   npm install
-   ```
-
-3. **Install Frontend Dependencies**
-   ```bash
-   cd ../client
-   npm install
-   ```
-
-4. **Start the Development Servers**
-
-   Open a terminal for the backend:
-   ```bash
-   cd server
-   npm run dev
-   ```
-
-   Open a terminal for the frontend:
-   ```bash
-   cd client
-   npm start
-   ```
-
-5. **Access the Application**
-   Open [http://localhost:3000](http://localhost:3000) in your browser.
+```
+orbitra-itinerary/
+│
+├── client/                          # React Frontend
+│   └── src/
+│       ├── api/
+│       │   └── axios.js             # Axios instance + interceptors
+│       ├── context/
+│       │   └── AuthContext.js       # Global auth state
+│       ├── pages/
+│       │   ├── Login.js             # Login page
+│       │   ├── Register.js          # Register page
+│       │   ├── Dashboard.js         # Itinerary history
+│       │   ├── Upload.js            # File upload + generation
+│       │   ├── ItineraryDetail.js   # Full itinerary view + share
+│       │   └── ShareView.js         # Public shared itinerary
+│       └── App.js                   # Routes + auth guard
+│
+└── server/                          # Node.js Backend
+    ├── controllers/
+    │   ├── authController.js        # register, login, getMe
+    │   └── itineraryController.js   # upload, generate, CRUD, share
+    ├── middleware/
+    │   ├── authMiddleware.js        # JWT protect middleware
+    │   └── errorHandler.js         # Global error handler
+    ├── models/
+    │   ├── User.js                  # User schema + password hashing
+    │   └── Itinerary.js            # Itinerary schema with sub-schemas
+    ├── routes/
+    │   ├── authRoutes.js           # /api/auth/*
+    │   └── itineraryRoutes.js      # /api/itinerary/*
+    ├── services/
+    │   ├── aiService.js            # Groq AI generation
+    │   └── extractionService.js    # PDF/image extraction
+    ├── utils/
+    │   └── responseHelper.js       # Consistent API responses
+    └── server.js                   # Express app entry point
+```
 
 ---
 
-## 📡 Deployment Instructions
+## 🚀 API Endpoints
 
-- **Backend:** Deployed on Render. Make sure to set all the Environment Variables in the Render dashboard.
-- **Frontend:** Deployed on Vercel. Set the `REACT_APP_API_URL` to your Render backend URL.
-- **Database:** MongoDB Atlas is used for production storage.
+### Auth
+| Method | Endpoint | Description | Auth |
+|---|---|---|---|
+| POST | `/api/auth/register` | Register new user | ❌ |
+| POST | `/api/auth/login` | Login user | ❌ |
+| GET | `/api/auth/me` | Get current user | ✅ |
+
+### Itinerary
+| Method | Endpoint | Description | Auth |
+|---|---|---|---|
+| POST | `/api/itinerary/upload` | Upload doc + generate itinerary | ✅ |
+| GET | `/api/itinerary` | Get all my itineraries | ✅ |
+| GET | `/api/itinerary/:id` | Get single itinerary | ✅ |
+| DELETE | `/api/itinerary/:id` | Delete itinerary | ✅ |
+| POST | `/api/itinerary/:id/share` | Generate share link | ✅ |
+| DELETE | `/api/itinerary/:id/share` | Revoke share link | ✅ |
+| GET | `/api/itinerary/share/:token` | View shared itinerary | ❌ |
+
+### Response Format
+```json
+// Success
+{ "success": true, "data": { ... } }
+
+// Error
+{ "success": false, "error": "message" }
+```
+
+---
+
+## ⚙️ Local Setup
+
+### Prerequisites
+- Node.js v18+
+- MongoDB (local or Atlas)
+- Groq API key (free at console.groq.com)
+
+### 1. Clone the repo
+```bash
+git clone https://github.com/PavanShinde412/orbitra-itinerary.git
+cd orbitra-itinerary
+```
+
+### 2. Setup Backend
+```bash
+cd server
+npm install
+```
+
+Create `server/.env`:
+```env
+PORT=5000
+MONGO_URI=mongodb://localhost:27017/orbitra
+JWT_SECRET=your_jwt_secret_here
+JWT_EXPIRE=7d
+GROQ_API_KEY=your_groq_api_key_here
+NODE_ENV=development
+CLIENT_URL=http://localhost:3000
+```
+
+```bash
+npm run dev
+```
+
+### 3. Setup Frontend
+```bash
+cd client
+npm install
+npm start
+```
+
+Open http://localhost:3000
+
+---
+
+## 🗄️ Database Schema
+
+### User
+```js
+{
+  name: String,
+  email: String (unique),
+  password: String (hashed),
+  createdAt: Date,
+  updatedAt: Date
+}
+```
+
+### Itinerary
+```js
+{
+  userId: ObjectId,
+  title: String,
+  destination: String,
+  startDate: String,
+  endDate: String,
+  duration: Number,
+  summary: {
+    airline, flightNumber, hotel,
+    totalTravelers, bookingReference
+  },
+  days: [{
+    day, date, title, accommodation,
+    notes, activities: [{
+      time, title, description,
+      location, type
+    }]
+  }],
+  sourceFiles: [{ originalName, mimetype, size, path }],
+  shareToken: String (unique),
+  isPublic: Boolean,
+  shareExpiry: Date,
+  status: enum['processing', 'completed', 'failed'],
+  createdAt: Date
+}
+```
+
+---
+
+## 🔄 How It Works
+
+```
+User uploads PDF/Image
+        ↓
+Multer saves file locally
+        ↓
+pdf-parse extracts text (PDF)
+OR base64 encode (Image)
+        ↓
+Groq LLaMA 3.3 processes text
+with structured prompt
+        ↓
+AI returns JSON itinerary
+        ↓
+Saved to MongoDB
+        ↓
+Displayed to user
+        ↓
+User can share via
+QR code / link / WhatsApp
+```
 
 ---
 
 ## 👨‍💻 Author
-- Your Name
-- GitHub: [@your-username](https://github.com/your-username)
+
+**Pavan Shinde**
+- GitHub: [@PavanShinde412](https://github.com/PavanShinde412)
+- Assignment for: Orbitra Technologies — Junior Full Stack Developer (MERN + AI)
+
+---
+
+## 📄 License
+
+MIT License — feel free to use this project for learning purposes.
