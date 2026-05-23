@@ -37,7 +37,7 @@ app.use('/api/itinerary', itineraryRoutes);
 
 // --- Health check route ---
 app.get('/api/health', (req, res) => {
-  res.json({ success: true, message: 'Orbitra API is running 🚀' });
+  res.json({ success: true, message: 'TripCraft API is running 🚀' });
 });
 
 // --- Global error handler (must be last) ---
